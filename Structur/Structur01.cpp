@@ -16,21 +16,21 @@ struct questionnaire {
 	sex pol;
 	tdata birthd;
 	short height;
-};
+} ;
 
 void display(questionnaire* arr, short size) {
-	//Функция отображающая полный список
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ РїРѕР»РЅС‹Р№ СЃРїРёСЃРѕРє
 	printf("\n*\t*\t*\t*\t*\nDISPLAY:\n");
 	for (short t = 0; t < size; t++) {
-		printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
-			t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
+		printf("в„– %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+			t+1,arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 			arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
 	}
 	printf("*\t*\t*\t*\t*\n");
 }
 
 void mean_height(questionnaire* arr, short size, const char* pol) {
-	//Функция отображающая среднее значение роста из списка
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ СЃСЂРµРґРЅРµРµ Р·РЅР°С‡РµРЅРёРµ СЂРѕСЃС‚Р° РёР· СЃРїРёСЃРєР°
 	short mh = 0, c = 0;
 	for (short i = 0; i < size; i++) {
 		if (strcmp(sex_names[arr[i].pol], pol) == 0) {
@@ -44,7 +44,7 @@ void mean_height(questionnaire* arr, short size, const char* pol) {
 }
 
 void show(questionnaire* student) {
-	//Функция отображающая человека по индексу из списка
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ С‡РµР»РѕРІРµРєР° РїРѕ РёРЅРґРµРєСЃСѓ РёР· СЃРїРёСЃРєР°
 	printf("\n*\t*\t*\t*\t*\nSHOW:\n");
 	printf("Name: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n",
 		student->name, sex_names[student->pol], student->birthd.day,
@@ -53,16 +53,16 @@ void show(questionnaire* student) {
 }
 
 void show_name(questionnaire* arr, short size, const char* name) {
-	//Функция отображающая информацию о человеке из списка по имени
-	printf("\n*\t*\t*\t*\t*\nSHOW_NAME:\n");
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‡РµР»РѕРІРµРєРµ РёР· СЃРїРёСЃРєР° РїРѕ РёРјРµРЅРё
+	printf("\n*\t*\t*\t*\t*\nSHOW_NAME: %s\n", name);
 	for (short t = 0; t < size; t++) {
 		if (strcmp(arr[t].name, name) == 0) {
-			printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
-				t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
+			printf("в„– %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+				t+1,arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 				arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
-
+				break;
 		}
-		printf("Данного человека нет в списке\n");
+		else if (t == size-1 && strcmp(arr[t].name, name) != 0) printf("Р”Р°РЅРЅРѕРіРѕ С‡РµР»РѕРІРµРєР° РЅРµС‚ РІ СЃРїРёСЃРєРµ\n");
 	}
 	printf("*\t*\t*\t*\t*\n");
 }
@@ -125,19 +125,19 @@ questionnaire* init() {
 }
 
 int main() {
-	system("chcp 1251>nul");
+	setlocale(LC_ALL, "");
 	questionnaire* data = init();
-	display(data, SIZE); //Выводим исходный список
-	mean_height(data, SIZE, "male"); //средний рост мальчиков
-	sorter(data, SIZE, bool_height, true); //сортируем по росту
-	questionnaire h_girls[5]; for (short x = 0; x < 5; x++) h_girls[x] = data[x]; //5 самых высоких девочек
+	display(data, SIZE); //Р’С‹РІРѕРґРёРј РёСЃС…РѕРґРЅС‹Р№ СЃРїРёСЃРѕРє
+	mean_height(data, SIZE, "male"); //СЃСЂРµРґРЅРёР№ СЂРѕСЃС‚ РјР°Р»СЊС‡РёРєРѕРІ
+	sorter(data, SIZE, bool_height, true); //СЃРѕСЂС‚РёСЂСѓРµРј РїРѕ СЂРѕСЃС‚Сѓ
+	questionnaire h_girls[5]; for (short x = 0; x < 5; x++) h_girls[x] = data[x]; //5 СЃР°РјС‹С… РІС‹СЃРѕРєРёС… РґРµРІРѕС‡РµРє
 	display(h_girls, 5);
-	sorter(data, SIZE, bool_lex, false); // Отсортировать список учеников в лексикографическом порядке
+	sorter(data, SIZE, bool_lex, false); // РћС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє СѓС‡РµРЅРёРєРѕРІ РІ Р»РµРєСЃРёРєРѕРіСЂР°С„РёС‡РµСЃРєРѕРј РїРѕСЂСЏРґРєРµ
 	display(data, SIZE);
-	show_name(data, SIZE, "Eliza"); //все данные по конкретному ученику (по имени ученика)
-	replace(&data[4]); //функция изменения данных конкретного ученика
+	show_name(data, SIZE, "Eliza"); //РІСЃРµ РґР°РЅРЅС‹Рµ РїРѕ РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ СѓС‡РµРЅРёРєСѓ (РїРѕ РёРјРµРЅРё СѓС‡РµРЅРёРєР°)
+	replace(&data[4]); //С„СѓРЅРєС†РёСЏ РёР·РјРµРЅРµРЅРёСЏ РґР°РЅРЅС‹С… РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ СѓС‡РµРЅРёРєР°
 	short* k = new short{ 0 };
-	questionnaire* april_birthded = find_my(data, SIZE, *k, bool_april_birthded, false); // все рожденные в апреле
+	questionnaire* april_birthded = find_my(data, SIZE, *k, bool_april_birthded, false); // РІСЃРµ СЂРѕР¶РґРµРЅРЅС‹Рµ РІ Р°РїСЂРµР»Рµ
 	display(april_birthded, *k);
 
 
@@ -183,7 +183,7 @@ int replace(questionnaire* student) {
 char replace_menu() {
 	char ch;
 	cout << "\nChoise struct to replace:" << endl;
-	cout << "(N)ame\t(S)ex\t(D)ate of birthd\t(H)eight\t(Q)uit\n" << endl;
+	cout << "(N)ame (S)ex (D)ate of birthd (H)eight (Q)uit\n" << endl;
 	do {
 		cout << "Input comand: "; cin >> ch;
 	} while (!strchr("nsdhq", tolower(ch)));
@@ -199,10 +199,10 @@ void replace_height(questionnaire* student) {
 void replace_date(questionnaire* student) {
 	printf("\nBirthday now: %i.%i.%i", student->birthd.day, student->birthd.month, student->birthd.year);
 	char ch;
-	cout << "Input key to replace:\n(D)ay\t(M)onth\t(Y)ear\t(A)ll\t(Q)uit\n";
+	cout << "\nInput key to replace:\n(D)ay (M)onth (Y)ear (A)ll (Q)uit\n";
 	do {
 		cout << "Input key: "; cin >> ch;
-	} while (!strchr("dmyq", tolower(ch)));
+	} while (!strchr("dmyaq", tolower(ch)));
 	switch (ch) {
 	case 'd': replace_date_day(student);
 		break;
