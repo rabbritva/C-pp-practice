@@ -24,7 +24,7 @@ void display(questionnaire* arr, short size) {
 	//Функция отображающая полный список
 	printf("\n*\t*\t*\t*\t*\nDISPLAY:\n");
 	for (short t = 0; t < size; t++) {
-		printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+		printf("# %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
 			t+1,arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 			arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
 	}
@@ -132,50 +132,63 @@ questionnaire* init() {
 
 int main() {
 	setlocale(LC_ALL, "");
-	questionnaire* data = init();
-	// questionnaire* data;
 	string filename = "list.txt";
 	string filenameb = "binary.txt";
-	// file_print(filename);
+	file_print(filename); //Отображение данных файла
 
 	questionnaire* data2;
 	short size;
-	data2 = file_read(filename, size);
-	// display(data2, size);
-	binary_write(filenameb, data2, size);
+	data2 = file_read(filename, size); //Считывание данных из файла
+	display(data2, size);
+	binary_write(filenameb, data2, size); //Бинарная запись структуры в файл
 	delete[] data2;
-	questionnaire* arr;
-	size = 0;
-	arr = file_read(filename, size);
-	display(arr, size);
 
-	// delete[] data;
+	questionnaire* arr; //Создаём новый массив структур для проверки функции чтения бин. файлов
+	size = 0;
+	arr = binary_read(filenameb, size); //Чтение бин. файла
+	display(arr, size); //Результат
+	delete[] arr;
+
 	return 0;
 }
 
 questionnaire* binary_read(string filename, short &size) {
-	questionnaire student;
 	fstream file;
 	file.open(filename, ios::in | ios::binary);
+	questionnaire* arr = nullptr;
 	if (file.is_open()) {
+		printf("Reading binary file %s\n", filename.c_str());
 		file.read((char*)&size, sizeof(size));
-		questionnaire* arr = new questionnaire[size];
-		short x = 0;
-		while (file.read((char*)&student, sizeof(student))) {
-			arr[x] = student;
-			x++;
+		arr = new questionnaire[size];
+
+		for (short x = 0; x < size; x++) {
+			// file.read((char*)&arr[x], sizeof(questionnaire));
+			file.read(arr[x].name, sizeof(arr[x].name));
+			file.read((char*)&arr[x].pol, sizeof(arr[x].pol));
+			file.read((char*)&arr[x].birthd.day, sizeof(arr[x].birthd.day));
+			file.read((char*)&arr[x].birthd.month, sizeof(arr[x].birthd.month));
+			file.read((char*)&arr[x].birthd.year, sizeof(arr[x].birthd.year));
+			file.read((char*)&arr[x].height, sizeof(arr[x].height));
 		}
-		return arr;
+		file.close();
 	}
 	else printf("\nFile not founded\n");
+	return arr;
 }
 void binary_write(string filename, questionnaire* arr, short size) {
 	fstream file;
 	file.open(filename, ios::out | ios::binary | ios::trunc);
 	if (file.is_open()) {
+		printf("\nWriting binary file %s\n", filename.c_str());
 		file.write((char*)&size, sizeof(size));
 		for (short x = 0;x < size;x++) {
-			file.write((char*)&arr[x], sizeof(*arr));
+			// file.write((char*)&arr[x], sizeof(questionnaire));
+			file.write(arr[x].name, sizeof(arr[x].name));
+			file.write((char*)&arr[x].pol, sizeof(arr[x].pol));
+			file.write((char*)&arr[x].birthd.day, sizeof(arr[x].birthd.day));
+			file.write((char*)&arr[x].birthd.month, sizeof(arr[x].birthd.month));
+			file.write((char*)&arr[x].birthd.year, sizeof(arr[x].birthd.year));
+			file.write((char*)&arr[x].height, sizeof(arr[x].height));
 		}
 		file.close();
 	}
@@ -194,6 +207,7 @@ short count_string(fstream& file) {
 	return count;
 }
 questionnaire split_init(string str, char del) {
+	/*Сплитуем строку с данными по заданному разделителю*/
 	const char* ptr = str.c_str();
 	char mas[SIZE_STRUCT][SIZE] = {""};
 	for (short i = 0;*ptr; ptr++) {
@@ -216,12 +230,14 @@ questionnaire split_init(string str, char del) {
 }
 questionnaire* file_read(string filename, short& size) {
 	/*Считываем данные из файла*/
+	printf("\nReading data from file %s\n", filename.c_str());
 	string str;
 	fstream file; file.open(filename);
+	questionnaire* arr = nullptr;
 	if (file.is_open()) {
 		size = count_string(file);
 
-		questionnaire* arr = new questionnaire[size];
+		arr = new questionnaire[size];
 
 		for (short i = 0; i < size; i++) {
 			getline(file, str);
@@ -229,12 +245,13 @@ questionnaire* file_read(string filename, short& size) {
 		}
 
 		file.close();
-		return arr;
 	}
-	printf("\nFile not founded\n");
+	else printf("\nFile not founded\n");
+	return arr;
 }
 void file_print(string filename) {
 	/*Смотрим содержимое файла построчно*/
+	printf("\nRead file %s:\n", filename.c_str());
 	fstream file; file.open(filename);
 	if (file.is_open()) {
 		string str;
