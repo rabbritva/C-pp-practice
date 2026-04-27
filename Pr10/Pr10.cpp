@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cstdlib>
 #include<cstring>
+#include<string>
 #include<fstream>
 using namespace std;
 
@@ -25,7 +26,7 @@ void display(questionnaire* arr, short size) {
 	printf("\n*\t*\t*\t*\t*\nDISPLAY:\n");
 	for (short t = 0; t < size; t++) {
 		printf("# %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
-			t+1,arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
+			t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 			arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
 	}
 	printf("*\t*\t*\t*\t*\n");
@@ -60,11 +61,11 @@ void show_name(questionnaire* arr, short size, const char* name) {
 	for (short t = 0; t < size; t++) {
 		if (strcmp(arr[t].name, name) == 0) {
 			printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
-				t+1,arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
+				t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 				arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
-				break;
+			break;
 		}
-		else if (t == size-1 && strcmp(arr[t].name, name) != 0) printf("Данного человека нет в списке\n");
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) printf("Данного человека нет в списке\n");
 	}
 	printf("*\t*\t*\t*\t*\n");
 }
@@ -103,7 +104,7 @@ void file_print(string filename);
 questionnaire* file_read(string filename, short& size);
 questionnaire split_init(string str, char del);
 void binary_write(string filename, questionnaire* arr, short size);
-questionnaire* binary_read(string filename, short &size);
+questionnaire* binary_read(string filename, short& size);
 
 questionnaire* init() {
 	questionnaire* mas = new questionnaire[SIZE];
@@ -152,12 +153,12 @@ int main() {
 	return 0;
 }
 
-questionnaire* binary_read(string filename, short &size) {
+questionnaire* binary_read(string filename, short& size) {
 	fstream file;
 	file.open(filename, ios::in | ios::binary);
 	questionnaire* arr = nullptr;
 	if (file.is_open()) {
-		printf("Reading binary file %s\n", filename.c_str());
+		printf("\nReading binary file %s\n", filename.c_str());
 		file.read((char*)&size, sizeof(size));
 		arr = new questionnaire[size];
 
@@ -181,7 +182,7 @@ void binary_write(string filename, questionnaire* arr, short size) {
 	if (file.is_open()) {
 		printf("\nWriting binary file %s\n", filename.c_str());
 		file.write((char*)&size, sizeof(size));
-		for (short x = 0;x < size;x++) {
+		for (short x = 0; x < size; x++) {
 			// file.write((char*)&arr[x], sizeof(questionnaire));
 			file.write(arr[x].name, sizeof(arr[x].name));
 			file.write((char*)&arr[x].pol, sizeof(arr[x].pol));
@@ -209,8 +210,8 @@ short count_string(fstream& file) {
 questionnaire split_init(string str, char del) {
 	/*Сплитуем строку с данными по заданному разделителю*/
 	const char* ptr = str.c_str();
-	char mas[SIZE_STRUCT][SIZE] = {""};
-	for (short i = 0;*ptr; ptr++) {
+	char mas[SIZE_STRUCT][SIZE] = { "" };
+	for (short i = 0; *ptr; ptr++) {
 		if (*ptr == del) {
 			i++;
 		}
@@ -219,8 +220,8 @@ questionnaire split_init(string str, char del) {
 		}
 	}
 	questionnaire student;
-	strcpy(student.name, mas[0]);
-	student.pol = (atoi(mas[1])==0)? male: femal;
+	strcpy_s(student.name, mas[0]);
+	student.pol = (atoi(mas[1]) == 0) ? male : femal;
 	student.birthd.day = atoi(mas[2]);
 	student.birthd.month = atoi(mas[3]);
 	student.birthd.year = atoi(mas[4]);
