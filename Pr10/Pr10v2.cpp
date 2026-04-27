@@ -22,7 +22,7 @@ struct questionnaire {
 };
 
 void display(questionnaire* arr, short size) {
-	//Функция отображающая полный список
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ РїРѕР»РЅС‹Р№ СЃРїРёСЃРѕРє
 	printf("\n*\t*\t*\t*\t*\nDISPLAY:\n");
 	for (short t = 0; t < size; t++) {
 		printf("# %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
@@ -33,7 +33,7 @@ void display(questionnaire* arr, short size) {
 }
 
 void mean_height(questionnaire* arr, short size, const char* pol) {
-	//Функция отображающая среднее значение роста из списка
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ СЃСЂРµРґРЅРµРµ Р·РЅР°С‡РµРЅРёРµ СЂРѕСЃС‚Р° РёР· СЃРїРёСЃРєР°
 	short mh = 0, c = 0;
 	for (short i = 0; i < size; i++) {
 		if (strcmp(sex_names[arr[i].pol], pol) == 0) {
@@ -47,7 +47,7 @@ void mean_height(questionnaire* arr, short size, const char* pol) {
 }
 
 void show(questionnaire* student) {
-	//Функция отображающая человека по индексу из списка
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ С‡РµР»РѕРІРµРєР° РїРѕ РёРЅРґРµРєСЃСѓ РёР· СЃРїРёСЃРєР°
 	printf("\n*\t*\t*\t*\t*\nSHOW:\n");
 	printf("Name: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n",
 		student->name, sex_names[student->pol], student->birthd.day,
@@ -56,16 +56,16 @@ void show(questionnaire* student) {
 }
 
 void show_name(questionnaire* arr, short size, const char* name) {
-	//Функция отображающая информацию о человеке из списка по имени
+	//Р¤СѓРЅРєС†РёСЏ РѕС‚РѕР±СЂР°Р¶Р°СЋС‰Р°СЏ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‡РµР»РѕРІРµРєРµ РёР· СЃРїРёСЃРєР° РїРѕ РёРјРµРЅРё
 	printf("\n*\t*\t*\t*\t*\nSHOW_NAME: %s\n", name);
 	for (short t = 0; t < size; t++) {
 		if (strcmp(arr[t].name, name) == 0) {
-			printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+			printf("в„– %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
 				t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 				arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
 			break;
 		}
-		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) printf("Данного человека нет в списке\n");
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) printf("Р”Р°РЅРЅРѕРіРѕ С‡РµР»РѕРІРµРєР° РЅРµС‚ РІ СЃРїРёСЃРєРµ\n");
 	}
 	printf("*\t*\t*\t*\t*\n");
 }
@@ -135,19 +135,19 @@ int main() {
 	setlocale(LC_ALL, "");
 	string filename = "list.txt";
 	string filenameb = "binary.txt";
-	file_print(filename); //Отображение данных файла
+	file_print(filename); //РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РґР°РЅРЅС‹С… С„Р°Р№Р»Р°
 
 	questionnaire* data2;
 	short size;
-	data2 = file_read(filename, size); //Считывание данных из файла
+	data2 = file_read(filename, size); //РЎС‡РёС‚С‹РІР°РЅРёРµ РґР°РЅРЅС‹С… РёР· С„Р°Р№Р»Р°
 	display(data2, size);
-	binary_write(filenameb, data2, size); //Бинарная запись структуры в файл
+	binary_write(filenameb, data2, size); //Р‘РёРЅР°СЂРЅР°СЏ Р·Р°РїРёСЃСЊ СЃС‚СЂСѓРєС‚СѓСЂС‹ РІ С„Р°Р№Р»
 	delete[] data2;
 
-	questionnaire* arr; //Создаём новый массив структур для проверки функции чтения бин. файлов
+	questionnaire* arr; //РЎРѕР·РґР°С‘Рј РЅРѕРІС‹Р№ РјР°СЃСЃРёРІ СЃС‚СЂСѓРєС‚СѓСЂ РґР»СЏ РїСЂРѕРІРµСЂРєРё С„СѓРЅРєС†РёРё С‡С‚РµРЅРёСЏ Р±РёРЅ. С„Р°Р№Р»РѕРІ
 	size = 0;
-	arr = binary_read(filenameb, size); //Чтение бин. файла
-	display(arr, size); //Результат
+	arr = binary_read(filenameb, size); //Р§С‚РµРЅРёРµ Р±РёРЅ. С„Р°Р№Р»Р°
+	display(arr, size); //Р РµР·СѓР»СЊС‚Р°С‚
 	delete[] arr;
 
 	return 0;
@@ -161,7 +161,7 @@ questionnaire* binary_read(string filename, short& size) {
 		printf("\nReading binary file %s\n", filename.c_str());
 		file.read((char*)&size, sizeof(size));
 		arr = new questionnaire[size];
-		file.read((char*)arr, sizeof(questionnaire) * size);
+		file.read((char*)arr, sizeof(questionnaire)*size);
 		file.close();
 	}
 	else printf("\nFile not founded\n");
@@ -173,25 +173,25 @@ void binary_write(string filename, questionnaire* arr, short size) {
 	if (file.is_open()) {
 		printf("\nWriting binary file %s\n", filename.c_str());
 		file.write((char*)&size, sizeof(size));
-		file.write((char*)arr, sizeof(arr[0]) * size);
+		file.write((char*)arr, sizeof(arr[0])*size);
 		file.close();
 	}
 	else printf("\nFile not founded\n");
 }
 
 short count_string(fstream& file) {
-	//Считаем количество записей в файле
+	//РЎС‡РёС‚Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїРёСЃРµР№ РІ С„Р°Р№Р»Рµ
 	string str;
 	short count = 0;
 	while (getline(file, str)) {
 		count++;
 	}
-	file.clear(); //что-то там с какими-то битами состояния; ф-ия их сбрасывает
-	file.seekg(0, ios::beg); //ios::beg - положения отсчета нового индекса коретки. Аналогично seek
+	file.clear(); //С‡С‚Рѕ-С‚Рѕ С‚Р°Рј СЃ РєР°РєРёРјРё-С‚Рѕ Р±РёС‚Р°РјРё СЃРѕСЃС‚РѕСЏРЅРёСЏ; С„-РёСЏ РёС… СЃР±СЂР°СЃС‹РІР°РµС‚
+	file.seekg(0, ios::beg); //ios::beg - РїРѕР»РѕР¶РµРЅРёСЏ РѕС‚СЃС‡РµС‚Р° РЅРѕРІРѕРіРѕ РёРЅРґРµРєСЃР° РєРѕСЂРµС‚РєРё. РђРЅР°Р»РѕРіРёС‡РЅРѕ seek
 	return count;
 }
 questionnaire split_init(string str, char del) {
-	/*Сплитуем строку с данными по заданному разделителю*/
+	/*РЎРїР»РёС‚СѓРµРј СЃС‚СЂРѕРєСѓ СЃ РґР°РЅРЅС‹РјРё РїРѕ Р·Р°РґР°РЅРЅРѕРјСѓ СЂР°Р·РґРµР»РёС‚РµР»СЋ*/
 	const char* ptr = str.c_str();
 	char mas[SIZE_STRUCT][SIZE] = { "" };
 	for (short i = 0; *ptr; ptr++) {
@@ -213,7 +213,7 @@ questionnaire split_init(string str, char del) {
 	return student;
 }
 questionnaire* file_read(string filename, short& size) {
-	/*Считываем данные из файла*/
+	/*РЎС‡РёС‚С‹РІР°РµРј РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»Р°*/
 	printf("\nReading data from file %s\n", filename.c_str());
 	string str;
 	fstream file; file.open(filename);
@@ -234,7 +234,7 @@ questionnaire* file_read(string filename, short& size) {
 	return arr;
 }
 void file_print(string filename) {
-	/*Смотрим содержимое файла построчно*/
+	/*РЎРјРѕС‚СЂРёРј СЃРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р° РїРѕСЃС‚СЂРѕС‡РЅРѕ*/
 	printf("\nRead file %s:\n", filename.c_str());
 	fstream file; file.open(filename);
 	if (file.is_open()) {

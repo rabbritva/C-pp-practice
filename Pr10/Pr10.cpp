@@ -161,8 +161,6 @@ questionnaire* binary_read(string filename, short& size) {
 		printf("\nReading binary file %s\n", filename.c_str());
 		file.read((char*)&size, sizeof(size));
 		arr = new questionnaire[size];
-
-		file.read((char*)&arr, sizeof(arr[0])*size)
 		for (short x = 0; x < size; x++) {
 			 file.read((char*)&arr[x], sizeof(questionnaire));
 		}
