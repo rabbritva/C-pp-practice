@@ -55,19 +55,29 @@ void show(questionnaire* student) {
 	printf("*\t*\t*\t*\t*\n");
 }
 
+questionnaire* find_student(questionnaire* arr, short size, const char* name, short& number) {
+	for (short t = 0; t < size; t++) {
+		if (strcmp(arr[t].name, name) == 0) { number = t + 1; return &arr[t]; }
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) { printf("Данного человека нет в списке\n"); return nullptr; }
+	}
+}
+questionnaire* find_student(questionnaire* arr, short size, const char* name) {
+	for (short t = 0; t < size; t++) {
+		if (strcmp(arr[t].name, name) == 0) return &arr[t];
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) { printf("Данного человека нет в списке\n"); return nullptr; }
+	}
+}
 void show_name(questionnaire* arr, short size, const char* name) {
 	//Функция отображающая информацию о человеке из списка по имени
-	printf("\n*\t*\t*\t*\t*\nSHOW_NAME: %s\n", name);
-	for (short t = 0; t < size; t++) {
-		if (strcmp(arr[t].name, name) == 0) {
-			printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
-				t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
-				arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
-			break;
-		}
-		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) printf("Данного человека нет в списке\n");
+	short number;
+	questionnaire* student = find_student(arr, size, name, number);
+	if (student) {
+		printf("\n*\t*\t*\t*\t*\nSHOW_NAME: %s\n", name);
+		printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+			number, student->name, sex_names[student->pol], student->birthd.day,
+			student->birthd.month, student->birthd.year, student->height);
+		printf("*\t*\t*\t*\t*\n");
 	}
-	printf("*\t*\t*\t*\t*\n");
 }
 
 
@@ -84,6 +94,7 @@ int bool_lex(questionnaire* x1, questionnaire* x2) {
 
 
 int replace(questionnaire* student);
+int replace(questionnaire* arr, short size, const char* name);
 char replace_menu();
 void replace_name(questionnaire* student);
 void replace_sex(questionnaire* student);
@@ -264,7 +275,27 @@ void sorter(questionnaire* arr, short size, int (*f)(questionnaire* x1, question
 		}
 	}
 }
-
+int replace(questionnaire* arr, short size, const char* name) {
+	char ch;
+	cout << "Replace for " << name << endl;
+	questionnaire* student = find_student(arr, size, name);
+	show(student);
+	for (;;) {
+		ch = replace_menu();
+		switch (ch) {
+		case 'n': replace_name(student);
+			break;
+		case 's': replace_sex(student);
+			break;
+		case 'd': replace_date(student);
+			break;
+		case 'h': replace_height(student);
+			break;
+		case 'q': show(student);
+			return 0;
+		}
+	}
+}
 int replace(questionnaire* student) {
 	char ch;
 	cout << "Replace for " << student->name << endl;
