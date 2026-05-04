@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Ship {
@@ -10,7 +11,7 @@ public:
 	Ship(string name = "", float v = 0, float speed = 0) {
 		this->name = name;
 		this->v = v < 0 ? 0 : v;
-		this->speed = v < 0 ? 0 : speed;
+		this->speed = speed < 0 ? 0 : speed;
 		all_t += v;
 	}
 	virtual void show() {
@@ -18,7 +19,7 @@ public:
 	}
 };
 
-class Sailbot : public Ship {
+class Sailbot : virtual public Ship {
 	int mast;
 public:
 	Sailbot(string name = "", float v = 0, float speed = 0, int mast = 1) : Ship(name, v, speed) {
@@ -30,7 +31,7 @@ public:
 	}
 	int get_mast() { return mast; }
 };
-class Steamship : public Ship {
+class Steamship : virtual public Ship {
 	float power;
 public:
 	Steamship(string name = "", float v = 0, float speed = 0, float power = 0) : Ship(name, v, speed) {
@@ -45,10 +46,12 @@ public:
 class Corvet : public Steamship, public Sailbot {
 	int gun;
 public:
-	Corvet(string name = "", float v = 0, float speed = 0, int mast = 1, int gun = 0) : Sailbot(name, v, speed, mast) {
+	Corvet(string name = "", float v = 0, float speed = 0, int mast = 1, int gun = 0) :
+	Ship(name, v, speed), Sailbot(name, v, speed, mast) {
 		this->gun = gun < 0 ? 0 : gun;
 	}
-	Corvet(string name = "", float v = 0, float speed = 0, double power = 0, int gun = 0) : Steamship(name, v, speed, power) {
+	Corvet(string name = "", float v = 0, float speed = 0, double power = 0, int gun = 0) :
+	Ship(name, v, speed),Steamship(name, v, speed, power) {
 		this->gun = gun < 0 ? 0 : gun;
 	}
 	void show() {
@@ -67,13 +70,17 @@ float Ship::all_t = 0;
 int main() {
 	setlocale(LC_ALL, "");
 	Ship s1("Черная жемчужина", 200, 25);
-	s1.show();
+
 	Sailbot s2("Галка", 2000, 10, 3);
-	s2.show();
+
 	Steamship s3("Титаник", 2000, 27, 55000);
-	s3.show();
-	Corvet s4("Адмирал Нахимов", 500, 33, 30000.0, 3), s5("Марат", 4000, 24, 1, 6);
-	s4.show();
-	s5.show();
+
+	Corvet s4("Адмирал Нахимов", 500, 33, (double)30000.0, 3),
+	s5("Марат", 4000, 24, 1, 6);
+
+	Ship* flot[] = {&s1, &s2, &s3, &s4, &s5, new Corvet("Test_ship", 200, 25, 2, 16) };
+	for (auto i: flot) {
+		i->show();
+	}
 	cout << "\nAll tonnazh: " << Ship::all_t << endl;
 }
