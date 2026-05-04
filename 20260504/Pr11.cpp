@@ -75,5 +75,5 @@ int main() {
 	Corvet s4("Адмирал Нахимов", 500, 33, 30000.0, 3), s5("Марат", 4000, 24, 1, 6);
 	s4.show();
 	s5.show();
-	cout << "All tonnazh: " << Ship::all_t << endl;
+	cout << "\nAll tonnazh: " << Ship::all_t << endl;
 }
