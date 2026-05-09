@@ -5,7 +5,7 @@
 #include<fstream>
 using namespace std;
 
-const int SIZE = 20;
+const int SIZE = 25;
 const int SIZE_STRUCT = 6;
 enum sex { male, femal };
 const char sex_names[2][6] = { "male", "femal" };
@@ -60,7 +60,7 @@ void show_name(questionnaire* arr, short size, const char* name) {
 	printf("\n*\t*\t*\t*\t*\nSHOW_NAME: %s\n", name);
 	for (short t = 0; t < size; t++) {
 		if (strcmp(arr[t].name, name) == 0) {
-			printf("№ %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
+			printf("# %i\nName: %s\nSex: %s\nBirthday: %i.%i.%i\nHieght: %i\n*\t*\t*\n",
 				t + 1, arr[t].name, sex_names[arr[t].pol], arr[t].birthd.day,
 				arr[t].birthd.month, arr[t].birthd.year, arr[t].height);
 			break;
@@ -69,7 +69,18 @@ void show_name(questionnaire* arr, short size, const char* name) {
 	}
 	printf("*\t*\t*\t*\t*\n");
 }
-
+questionnaire* find_student(questionnaire* arr, short size, const char* name, short& number) {
+	for (short t = 0; t < size; t++) {
+		if (strcmp(arr[t].name, name) == 0) { number = t + 1; return &arr[t]; }
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) { printf("Данного человека нет в списке\n"); return nullptr; }
+	}
+}
+questionnaire* find_student(questionnaire* arr, short size, const char* name) {
+	for (short t = 0; t < size; t++) {
+		if (strcmp(arr[t].name, name) == 0) return &arr[t];
+		else if (t == size - 1 && strcmp(arr[t].name, name) != 0) { printf("Данного человека нет в списке\n"); return nullptr; }
+	}
+}
 
 void sorter(questionnaire* arr, short size, int (*f)(questionnaire* x1, questionnaire* x2), bool reverse);
 
@@ -81,9 +92,13 @@ int bool_lex(questionnaire* x1, questionnaire* x2) {
 	if (strcmp(x1->name, x2->name) < 0) return 1;
 	return 0;
 }
-
+int bool_h_girls(questionnaire* x1, questionnaire* x2) {
+	if ((x1->pol==femal)&&(x2->pol==femal)&&!bool_height(x1,x2)) return 1;
+	return 0;
+}
 
 int replace(questionnaire* student);
+int replace(questionnaire* arr, short size, const char* name);
 char replace_menu();
 void replace_name(questionnaire* student);
 void replace_sex(questionnaire* student);
@@ -128,11 +143,38 @@ questionnaire* init() {
 	mas[17] = { "Tatiana", femal, {31, 5, 2005}, 170 };
 	mas[18] = { "Oksana", femal, {17, 7, 2005}, 165 };
 	mas[19] = { "Diana", femal, {1, 9, 2007}, 172 };
+	mas[20] = {"Dima" ,male, {05,02,2007}, 170};
+	mas[21] = {"Danila", male, {03, 12, 2006}, 180};
+	mas[22] = {"Nadir", male, {8, 12, 2006}, 175};
+	mas[23] = {"Nikita", male, {06, 05, 2007}, 178};
+	mas[24] = {"Aleksey", male, {21, 07, 2007}, 185};
 	return mas;
 }
 
 int main() {
 	setlocale(LC_ALL, "");
+
+	questionnaire* data = init();
+	display(data, SIZE); //Выводим исходный список
+	mean_height(data, SIZE, "male"); //средний рост мальчиков
+	sorter(data, SIZE, bool_h_girls, false);//сортируем по росту и полу
+	questionnaire* hgirls = new questionnaire[5];
+	for (short x = 0; x < 5; x++) hgirls[x] = data[x];
+	display(hgirls, 5);
+	delete[] hgirls;
+	sorter(data, SIZE, bool_lex, false); // Отсортировать список учеников в лексикографическом порядке
+	display(data, SIZE);
+	show_name(data, SIZE, "Eliza"); //все данные по конкретному ученику (по имени ученика)
+	replace(&data[9]); //функция изменения данных конкретного ученика
+	replace(data, SIZE, "Zirilla"); //функция изменения данных конкретного ученика по его имени
+	short* k = new short{ 0 };
+	questionnaire* april_birthded = find_my(data, SIZE, *k, bool_april_birthded, false); // все рожденные в апреле
+	display(april_birthded, *k);
+	delete k;
+	delete[] april_birthded;
+	delete[] data;
+
+
 	string filename = "list.txt";
 	string filenameb = "binary.txt";
 	file_print(filename); //Отображение данных файла
@@ -260,7 +302,27 @@ void sorter(questionnaire* arr, short size, int (*f)(questionnaire* x1, question
 		}
 	}
 }
-
+int replace(questionnaire* arr, short size, const char* name) {
+	char ch;
+	cout << "Replace for " << name << endl;
+	questionnaire* student = find_student(arr, size, name);
+	show(student);
+	for (;;) {
+		ch = replace_menu();
+		switch (ch) {
+			case 'n': replace_name(student);
+				break;
+			case 's': replace_sex(student);
+				break;
+			case 'd': replace_date(student);
+				break;
+			case 'h': replace_height(student);
+				break;
+			case 'q': show(student);
+				return 0;
+		}
+	}
+}
 int replace(questionnaire* student) {
 	char ch;
 	cout << "Replace for " << student->name << endl;
